@@ -25,12 +25,9 @@ while not success:
     print('10の位の値を行の番号，1の位の値を列の番号とし消したい車の番号を入力してください')
     num = input('>> ')
     try:
-        if 0 <= int(num) <= 9 :
-            cars[0][int(num[0])].delete()
-            success = True
-            root.update()
-        elif 10 <= int(num) <= 99 :
-            cars[int(num[0])][int(num[1])].delete()
+        n = int(num)
+        if 0 <= int(num) <= 99 :
+            cars[n // 10][n % 10].delete()
             success = True
             root.update()
         else:
