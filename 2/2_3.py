@@ -19,22 +19,26 @@ for i in range(10):
         car.create_car()
         c.append(car)
     cars.append(c)
-
-
-def console_input():
+root.update()
+success = False
+while not success:
     print('10の位の値を行の番号，1の位の値を列の番号とし消したい車の番号を入力してください')
     num = input('>> ')
-    # try:
-    if 0 <= int(num) <= 99 :
-        cars[int(num[0])][int(num[1])].delete()
-        root.update()
-    else:
-        print("0~99の範囲を入力してください")
-    # except:
-    #     print("半角数字を入力してください")
-    root.after(100, console_input)
+    try:
+        if 0 <= int(num) <= 9 :
+            cars[0][int(num[0])].delete()
+            success = True
+            root.update()
+        elif 10 <= int(num) <= 99 :
+            cars[int(num[0])][int(num[1])].delete()
+            success = True
+            root.update()
+        else:
+            print("0~99の範囲を入力してください")
+    except:
+        print("半角数字を入力してください")
+    root.update()
 
-root.after(100, console_input)
 
 root.mainloop()
 
