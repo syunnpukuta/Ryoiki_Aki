@@ -20,7 +20,9 @@ for i in range(10):
         c.append(car)
     cars.append(c)
 root.update()
+
 success = False
+
 while not success:
     print('10の位の値を行の番号，1の位の値を列の番号とし消したい車の番号を入力してください')
     num = input('>> ')
@@ -34,7 +36,6 @@ while not success:
             print("0~99の範囲を入力してください")
     except:
         print("半角数字を入力してください")
-    root.update()
 
 
 root.mainloop()
