@@ -10,26 +10,16 @@ root.geometry("1600x900")
 canvas = tkinter.Canvas(root, bg="white")
 canvas.pack(fill=tkinter.BOTH, expand=True)
 
-c = Cannon(canvas, 700, 700, 150, 100, "green", 1)
+c = Cannon(canvas, 700, 700, 90, 60, "green", 1)
 c.create()
 
 car = Car(canvas, 700, 100, 150, 100, "blue", 1)
 car.create()
 
-def create_car():
-    global car
-    car = Car(canvas, 100, 100, 150, 100, "blue", 1)
-    car.set_event("dead", create_car)
-    car.create()
-
-car.set_event("dead", create_car)
-
 def repaint():
     global car
     for i in Obj.objects:
         i._repaint_()
-        if i.tag == "bullet":
-            continue
         ids = canvas.find_overlapping(i.x, i.y, i.x + i.width, i.y+i.height)
         ids = [j for j in ids if j not in i.parts + [1, 2]]
         hit_objs = set([Obj.parts2Obj[j] for j in ids])
@@ -41,7 +31,6 @@ def repaint():
                 else:
                     i.on_hit(o)
 
-    move_car()
     root.after(10, repaint)
 
 
@@ -49,6 +38,24 @@ def key_event(e):
     key = e.keysym
     if key == "space":
         c.shoot()
+    delta = 20
+    x, y = 0, 0
+    if key == "Up":
+        if c.y >= delta:
+            y -= delta
+    if key == "Down":
+        if c.y + c.height < 900-delta:
+            y += delta
+    if key == "Left":
+        if c.x >= delta:
+            x -= delta
+    if key == "Right":
+        if c.x + c.width < 1600 - delta:
+            x += delta
+
+    c.move(x, y)
+
+
 root.bind("<KeyPress>", key_event)
 
 delta = 10

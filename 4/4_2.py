@@ -13,7 +13,7 @@ canvas = tkinter.Canvas(root, bg="white")
 # Canvasを配置
 canvas.pack(fill=tkinter.BOTH, expand=True)
 
-c = Cannon(canvas, 700, 700, 150, 100, "green")
+c = Cannon(canvas, 700, 700, 150, 100, "green", 1)
 c.create()
 
 def repaint():

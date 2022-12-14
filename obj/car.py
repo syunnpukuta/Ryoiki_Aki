@@ -1,14 +1,12 @@
 import random
 import tkinter as tk
-import uuid
-
-from obj.obj import Obj
+from obj.machine import Machine
 
 
-class Car(Obj):
+class Car(Machine):
 
-    def __init__(self, canvas: tk.Canvas, x, y, width, height, color):
-        super().__init__(canvas, x, y, width, height, color)
+    def __init__(self, canvas: tk.Canvas, x, y, width, height, color, hp):
+        super().__init__(canvas, x, y, width, height, color, hp)
         self.tag = "car"
 
     def _create(self):
@@ -45,6 +43,3 @@ class Car(Obj):
             fill='black',
             tags=[self.id, "car"]
         ),])
-
-    def on_bullet_hit(self, bullet):
-        self.delete()
