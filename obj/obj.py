@@ -1,8 +1,13 @@
 from __future__ import annotations
 import tkinter as tk
 import uuid
-# from typing import TYPE_CHECKING
-# if TYPE_CHECKING:
+
+
+
+
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from cannon import Cannon
 #     from bullet import Bullet
 
 
@@ -24,6 +29,7 @@ class Obj:
 
         self.id = str(uuid.uuid4())
         self.tag = ""
+        self.is_dead = False
         Obj.objects.append(self)
 
     def create(self):
@@ -44,14 +50,15 @@ class Obj:
 
         return True
 
-    def _repaint_(self):
+    def _repaint(self, cnt, cannon: "Cannon"):
         if self.check_area():
-            self.repaint()
+            self.repaint(cnt, cannon)
 
-    def repaint(self):
+    def repaint(self, cnt, cannon:"Cannon"):
         pass
 
     def delete(self):
+        self.is_dead = True
         self.canvas.delete(self.id)
         try:
             Obj.objects.remove(self)
@@ -62,9 +69,6 @@ class Obj:
         self.x += x
         self.y += y
         self.canvas.move(self.id, x, y)
-
-    def on_hit(self, obj: __class__):
-        pass
 
     def set_event(self, event, func):
         self.event_func[event] = func

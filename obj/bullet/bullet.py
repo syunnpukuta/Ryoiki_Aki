@@ -27,7 +27,7 @@ class Bullet(Obj):
             )
         )
 
-    def repaint(self):
+    def repaint(self, cnt, cannon:"Cannon"):
         self.move(self.dx, self.dy)
 
     def on_hit(self, obj: Machine):

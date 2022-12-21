@@ -27,7 +27,7 @@ car.set_event("dead", create_car)
 def repaint():
     global car
     for i in Obj.objects:
-        i._repaint_()
+        i._repaint(0)
         if i.tag == "bullet":
             continue
         ids = canvas.find_overlapping(i.x, i.y, i.x + i.width, i.y+i.height)
