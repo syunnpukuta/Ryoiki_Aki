@@ -14,6 +14,9 @@ class Cannon(Machine):
         self.r = False
         self.l = False
         self.max_hp = hp
+        self.interval = 20
+        self.delta = 8
+
 
 
     def _create(self):
@@ -36,34 +39,58 @@ class Cannon(Machine):
         ))
 
     def repaint(self, cnt, cannon:"Cannon"):
-        delta = 8
         if self.u:
-            if self.y >= delta:
-                self.move(0,-delta)
+            if self.y >= self.delta:
+                self.move(0,-self.delta)
         if self.d:
-            if self.y + self.height < 900 - delta:
-                self.move(0, delta)
+            if self.y + self.height < 900 - self.delta:
+                self.move(0, self.delta)
         if self.l:
-            if self.x >= delta:
-                self.move(-delta, 0)
+            if self.x >= self.delta:
+                self.move(-self.delta, 0)
 
         if self.r:
-            if self.x + self.width < 1600 - delta:
-                self.move(delta, 0)
+            if self.x + self.width < 1600 - self.delta:
+                self.move(self.delta, 0)
+        if cnt % self.interval == 0:
+            self.shoot()
+
 
     def shoot(self):
         Bullet(self.canvas, self.x+self.width//2, self.y-10, 10, 10, "black", 0, -4, self.tag, 1).create()
 
     def on_bullet_hit(self, bullet: "Bullet"):
-        super(Cannon, self).on_bullet_hit(bullet)
+        hp = self.hp
         if bullet.shoot_tag != "cannon":
-            self.canvas.move("hp", 0, 0)
-            self.canvas.move("hp", -(1600-(1600*(self.hp/self.max_hp))), 0)
+            super(Cannon, self).on_bullet_hit(bullet)
+            d = hp - self.hp
+            # self.canvas.move("hp", 0, 0)
+            # self.canvas.move("hp", -(1600-(1600*(self.hp/self.max_hp))), 0)
+            self.canvas.move("hp", -(1600/self.max_hp) * d, 0)
             h = self.hp / self.max_hp
-            if h > 0.5:
-                self.canvas.itemconfig("hp", fill="green")
-            elif h > 0.3:
-                self.canvas.itemconfig("hp", fill="yellow")
-            else:
-                self.canvas.itemconfig("hp", fill="red")
-            print(self.hp)
+            # if h > 0.5:
+            #     self.canvas.itemconfig("hp", fill="green")
+            # elif h > 0.3:
+            #     self.canvas.itemconfig("hp", fill="yellow")
+            # else:
+            #     self.canvas.itemconfig("hp", fill="red")
+
+    def add_hp(self, i):
+        self.hp += i
+        # self.canvas.move("hp", 0, 0)
+        # self.canvas.move("hp", -(1600 - (1600 * (self.hp / self.max_hp))), 0)
+        self.canvas.move("hp", (1600 / self.max_hp))
+        h = self.hp / self.max_hp
+        # if h > 0.5:
+        #     self.canvas.itemconfig("hp", fill="green")
+        # elif h > 0.3:
+        #     self.canvas.itemconfig("hp", fill="yellow")
+        # else:
+        #     self.canvas.itemconfig("hp", fill="red")
+
+    def on_hit(self, obj: "Obj"):
+        if obj.tag == "enemy":
+            obj.hp -= 10
+            self.delete()
+            if obj.hp <= 0:
+                obj.on_dead()

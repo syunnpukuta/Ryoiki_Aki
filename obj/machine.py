@@ -30,8 +30,9 @@ class Machine(Obj):
             self.event_func["dead"]()
 
     def on_hit(self, obj: __class__):
-        if self.tag != obj.tag:
-            obj.hp -= 10
-            self.delete()
-            if obj.hp <= 0:
-                obj.on_dead()
+        pass
+        # if obj.tag == "enemy":
+        #     obj.hp -= 10
+        #     self.delete()
+        #     if obj.hp <= 0:
+        #         obj.on_dead()

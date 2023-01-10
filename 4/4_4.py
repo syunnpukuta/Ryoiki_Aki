@@ -1,4 +1,5 @@
 import random
+import time
 import tkinter
 
 from obj.cannon import Cannon
@@ -14,7 +15,7 @@ root.geometry("1600x900+100+100")
 canvas = tkinter.Canvas(root, bg="white")
 canvas.pack(fill=tkinter.BOTH, expand=True)
 
-c = Cannon(canvas, 700, 700, 90, 60, "green", 10)
+c = Cannon(canvas, 700, 700, 81, 54, "green", 10)
 c.create()
 
 hp = canvas.create_rectangle(0, 890, 1600, 900, fill="green", tags="hp")
@@ -22,22 +23,29 @@ text = canvas.create_text(100, 50, text="倒した数: 0", font=("", 20), tags="
 
 cnt = 0
 def repaint():
+    t1 = time.time()
     global car, cnt
     for i in Obj.objects:
         i._repaint(cnt, c)
-        if i.tag == "bullet":
+        if i.tag == "bullet" or i.tag == "item":
             continue
         ids = canvas.find_overlapping(i.x, i.y, i.x + i.width, i.y+i.height)
         ids = [j for j in ids if j not in i.parts + [1, 2, 3, 4]]
-        hit_objs = set([Obj.parts2Obj[j] for j in ids])
-        if len(hit_objs) > 0:
-            for o in hit_objs:
-                if o.tag == "bullet":
-                    i.on_bullet_hit(o)
-                    break
-                else:
-                    if o.tag == "enemy":
-                        i.on_hit(o)
+        try:
+            hit_objs = set([Obj.parts2Obj[j] for j in ids])
+            if len(hit_objs) > 0:
+                for o in hit_objs:
+                    if o.tag == "bullet":
+                        i.on_bullet_hit(o)
+                        break
+                    else:
+                        if o.tag == "enemy":
+                            i.on_hit(o)
+
+                    if i.tag == "cannon" and o.tag == "item":
+                        o.on_hit(c)
+        except:
+            pass
         if c.is_dead:
             break
     if cnt % 197 == 0:
@@ -48,12 +56,10 @@ def repaint():
         Enemy3(canvas, random.randint(100, 1500), 0, 150, 100, "yellow", 3).create()
     if cnt % 987 == 0:
         Enemy4(canvas, random.randint(100, 1500), 0, 150, 100, "black", 3).create()
-    if cnt % 20 == 0 and not c.is_dead:
-        c.shoot()
     cnt += 1
 
     if not c.is_dead:
-        root.after(10, repaint)
+        root.after(10 - int((time.time() - time.time())), repaint)
 
 
 def key_press(e):
