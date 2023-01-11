@@ -64,29 +64,12 @@ class Cannon(Machine):
         if bullet.shoot_tag != "cannon":
             super(Cannon, self).on_bullet_hit(bullet)
             d = hp - self.hp
-            # self.canvas.move("hp", 0, 0)
-            # self.canvas.move("hp", -(1600-(1600*(self.hp/self.max_hp))), 0)
             self.canvas.move("hp", -(1600/self.max_hp) * d, 0)
             h = self.hp / self.max_hp
-            # if h > 0.5:
-            #     self.canvas.itemconfig("hp", fill="green")
-            # elif h > 0.3:
-            #     self.canvas.itemconfig("hp", fill="yellow")
-            # else:
-            #     self.canvas.itemconfig("hp", fill="red")
 
     def add_hp(self, i):
         self.hp += i
-        # self.canvas.move("hp", 0, 0)
-        # self.canvas.move("hp", -(1600 - (1600 * (self.hp / self.max_hp))), 0)
         self.canvas.move("hp", (1600 / self.max_hp))
-        h = self.hp / self.max_hp
-        # if h > 0.5:
-        #     self.canvas.itemconfig("hp", fill="green")
-        # elif h > 0.3:
-        #     self.canvas.itemconfig("hp", fill="yellow")
-        # else:
-        #     self.canvas.itemconfig("hp", fill="red")
 
     def on_hit(self, obj: "Obj"):
         if obj.tag == "enemy":

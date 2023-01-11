@@ -9,3 +9,4 @@ class HealthItem(Item):
 
     def effect(self, cannon: "Cannon"):
         cannon.add_hp(1)
+

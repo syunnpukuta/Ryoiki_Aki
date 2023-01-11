@@ -7,6 +7,7 @@ from obj.enemy.enemy1 import Enemy1
 from obj.enemy.enemy2 import Enemy2
 from obj.enemy.enemy3 import Enemy3
 from obj.enemy.enemy4 import Enemy4
+from obj.machine import Machine
 from obj.obj import Obj
 
 root = tkinter.Tk()
@@ -60,6 +61,13 @@ def repaint():
 
     if not c.is_dead:
         root.after(10 - int((time.time() - time.time())), repaint)
+    else:
+        gameover()
+
+def gameover():
+    canvas.delete("all")
+    canvas.create_text(800, 300, text="Game Over", font=("", 40), tags="text")
+    canvas.create_text(800, 400, text="倒した数: "+str(Machine.defeat_cnt), font=("", 40), tags="text")
 
 
 def key_press(e):
